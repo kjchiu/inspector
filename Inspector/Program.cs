@@ -9,6 +9,11 @@ namespace Inspector
     {
         static void Main(string[] args)
         {
+            new Scratch().DoStuff();
+#if DEBUG
+            Console.WriteLine("press any key to exit...");
+            Console.ReadLine();
+#endif            
         }
     }
 }
