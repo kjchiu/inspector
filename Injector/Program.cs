@@ -15,10 +15,7 @@ namespace Injector
             MetadataReaderHost host = new PeReader.DefaultHost();
             string file = null; // yeah i know i'm lazy
             Assembly assembly = (Assembly)host.LoadUnitFrom(file);
-            foreach (IAssembly reference in assembly.AssemblyReferences)
-            {
-                
-            }
+
             foreach (var type in assembly.AllTypes)
             {
                 foreach (MethodDefinition method in type.Methods)
