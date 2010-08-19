@@ -9,7 +9,11 @@ Injector
 
 Default api for injecting ops is kinda ugly
 
-    (method.Body as MethodBody).Operations.Insert(0, new Operation() { OperationCode = OperationCode.Ldstr, Value = "hello world" });
+    (method.Body as MethodBody).Operations.Insert(0
+                                                , new Operation() 
+                                                  { 
+                                                    OperationCode = OperationCode.Ldstr
+                                                  , Value = "hello world" });
 
 A new Block type, indexers, and some static type checks later we get
 
