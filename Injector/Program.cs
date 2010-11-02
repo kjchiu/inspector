@@ -11,7 +11,6 @@ namespace Injector
     {
         static void Main(string[] args)
         {
-            
             MetadataReaderHost host = new PeReader.DefaultHost();
             string file = null; // yeah i know i'm lazy
             Assembly assembly = (Assembly)host.LoadUnitFrom(file);
@@ -20,15 +19,19 @@ namespace Injector
             {
                 foreach (MethodDefinition method in type.Methods)
                 {
+                    var arguments = from IParameterDefinition param in method.Parameters
+                                         select string.Format("{0} {1}", param.Type.ToString(), param.Name.Value);
+
+                    string signature = string.Format("{0} {1}::{2}({3})", method.Type.ToString(), type.Name.ToString(), method.Name.ToString(), string.Join(",", arguments.ToArray()));
+                    
+
+
                     Block block = new Block();
-                    for (int i = 0; i < method.ParameterCount; ++i)
-                    {
-                        block = block
-                            [Ops.Ldarg, i]
-                            [Ops.Brfalse, 3] // yeah.. this isn't exactly how jmps work but oh well
-                            [Ops.Newobj, typeof(ArgumentNullException)]
-                            [Ops.Throw];
-                    }
+                    block = block
+                        [Ops.Ldstr, "]"]
+                        [Ops.Call, () => System.Diagnostics.Trace.WriteLine(null)];
+                        //[Ops.Ldstr, "["];
+
                     Injector.Inject(method, block);
                 }
                 

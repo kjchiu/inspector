@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Cci.MutableCodeModel;
+using System.Linq.Expressions;
 
 namespace Injector
 {
@@ -25,6 +26,15 @@ namespace Injector
         }
 
         public Block this[Func<object, Operation> op, object arg]
+        {
+            get
+            {
+                this.instructions.Add(op(arg));
+                return this;
+            }
+        }
+
+        public Block this[Func<Expression<Action>, Operation> op, Expression<Action> arg]
         {
             get
             {

@@ -24,7 +24,10 @@ namespace Inspector
             host = new PeReader.DefaultHost();
         }
 
-
+        public Inspector()
+        {
+            inspectors = new List<IInspector>();
+        }
         public void Inspect(string filePattern)
         {
             
@@ -72,7 +75,9 @@ namespace Inspector
 
         static void Main(string[] args)
         {
-            new Scratch().DoStuff();
+            Inspector gadget = new Inspector();
+            gadget.Inspect("*.*");
+            gadget.Inspectors.Add(new MethodInspector());
 #if DEBUG
             Console.WriteLine("press any key to exit...");
             Console.ReadLine();

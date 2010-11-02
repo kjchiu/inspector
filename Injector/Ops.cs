@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Cci;
 using Microsoft.Cci.MutableCodeModel;
+using System.Linq.Expressions;
 
 namespace Injector
 {
@@ -177,19 +178,25 @@ namespace Injector
             get { return () => new Operation() { OperationCode = OperationCode.Box }; }
         }
 
-        public static Func<object, Operation> Call
+        public static Func<Expression<Action>, Operation> Call
         {
-            get { return (object method) => new Operation() { OperationCode = OperationCode.Call, Value = method }; }
+            get 
+            {
+                return (Expression<Action> method) =>
+                    {                        
+                        return new Operation() { OperationCode = OperationCode.Call, Value = (method.Body as MethodCallExpression).Method };
+                    };
+            }
         }
 
-        public static Func<object, Operation> Calli
+        public static Func<Action, Operation> Calli
         {
-            get { return (object method) => new Operation() { OperationCode = OperationCode.Calli, Value = method }; }
+            get { return (Action method) => new Operation() { OperationCode = OperationCode.Calli, Value = method }; }
         }
 
-        public static Func<object, Operation> Callvirt
+        public static Func<Action, Operation> Callvirt
         {
-            get { return (object method) => new Operation() { OperationCode = OperationCode.Callvirt, Value = method }; }
+            get { return (Action method) => new Operation() { OperationCode = OperationCode.Callvirt, Value = method }; }
         }
 
         public static Func<Operation> Ceq
